@@ -1,0 +1,22 @@
+{
+  "name": "shiftreset",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nickroberts/shiftreset",
+  "authors": [
+    "Nick Roberts"
+  ],
+  "description": "Shift Reset site",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "~5.2.2",
+    "jquery": "~2.1.0"
+  }
+}

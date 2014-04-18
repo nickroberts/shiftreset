@@ -6,13 +6,13 @@ set :repo_url, 'git@github.com:nickroberts/shiftreset.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-set :branch, 'master'
+# set :branch, 'master'
 
 # Default deploy_to directory is /var/www/my_app
 # set :deploy_to, '/var/www/my_app'
 
 # Default value for :scm is :git
-# set :scm, :git
+set :scm, :git
 
 # Default value for :format is :pretty
 # set :format, :pretty
@@ -39,7 +39,7 @@ set :copy_compression, :gzip
 
 namespace :test do
   desc "Check that the remote diretory is writable"
-  task :check_write_permissions do
+  task :write_permissions do
     on roles(:all) do |host|
       if test("[ -w #{fetch(:deploy_to)} ]")
         info "#{fetch(:deploy_to)} is writable on #{host}"
@@ -48,6 +48,25 @@ namespace :test do
       end
     end
   end
+
+  desc "Check if agent forwarding is working"
+  task :forwarding do
+    on roles(:all) do |h|
+      if test("env | grep SSH_AUTH_SOCK")
+        info "Agent forwarding is up to #{h}"
+      else
+        error "Agent forwarding is NOT up to #{h}"
+      end
+    end
+  end
+end
+
+namespace :deploy do
+  desc 'Run jekyll to update site before uploading'
+  task :update_jekyll do
+    %x(rm -rf _site/* && jekyll)
+  end
+
 end
 
 # namespace :deploy do
