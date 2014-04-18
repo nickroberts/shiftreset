@@ -62,10 +62,18 @@ namespace :test do
 end
 
 namespace :deploy do
-  desc 'Run jekyll to update site before uploading'
-  task :update_jekyll do
-    %x(rm -rf _site/* && jekyll)
+
+  desc 'Jekyll build'
+  task :jekyll_build do
+    on roles(:web) do
+      within "#{deploy_to}/current" do
+        # There has to be a better way to do this
+        execute "cd #{deploy_to}/current && ~/.rbenv/shims/jekyll build"
+      end
+    end
   end
+
+  after :finished, :jekyll_build
 
 end
 
